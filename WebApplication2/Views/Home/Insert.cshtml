@@ -1,0 +1,59 @@
+﻿@model WebApplication2.Models.TestDatabasetr
+
+
+
+<div id="qrcodeCanvas" style="display:none"></div>
+
+
+<body translate="no">
+
+
+    <div class="container">
+        <form enctype="multipart/form-data" id="contact" asp-controller="Home" asp-action="Create" method="post">
+            <h3>Add new product</h3>
+            <h4>Fill out all to add new one.</h4>
+            <fieldset>
+                <input asp-for="product" id="product"  placeholder="Tovar name" name="product" type="text" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+                <input asp-for="initialAmount" placeholder="Number of products" name="initialAmount" type="text" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+                <input asp-for="currentAmount" placeholder="Current available" name="currentAmount" type="text" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+                <input asp-for="containerNumber"  id="containerNumber" placeholder="Container ID" name="containerNumber" type="text" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+                
+                <input asp-for="photo" class="form-control" name="photo">
+            </fieldset>
+            <fieldset>
+<textarea placeholder="Type here additional comment for this product....(Optional)" name="koment" tabindex="5"></textarea>
+            </fieldset>
+            <fieldset>
+                <button type="submit" id="contact-submit" data-submit="...Sending" > Submit</button>
+            </fieldset>
+
+        </form>
+    </div>
+</body>
+<script>
+
+    function updateQr() {
+        var qrString = $('#product').val() + "-" + $('#containerNumber').val();
+        if (!$('#qrcodeCanvas').find('#baseCanvas').length) {
+            $('#qrcodeCanvas').qrcode(qrString);
+        } else {
+            $('#baseCanvas').remove();
+            $('#qrcodeCanvas').qrcode(qrString);
+        }
+
+        var canvas = document.getElementById('baseCanvas');
+        var dataURL = canvas.toDataURL('image/png');
+        document.getElementById('qrImage').value = dataURL;
+    }
+
+
+
+</script>

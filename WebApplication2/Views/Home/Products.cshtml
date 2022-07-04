@@ -1,0 +1,76 @@
+﻿@model IEnumerable<TestDatabase>
+
+<div class="container" id="contact" style="margin: 0 auto;max-width: 70%;">
+
+
+    <table class="table table-bordered">
+
+        <thead class="thead-inverse">
+            <tr>
+                <th>#</th>
+                <th>Tovar</th>
+                <th>Initial</th>
+                <th>Available</th>
+                <th>Container</th>
+                <th>Date</th>
+                <th style="padding: 5px; text-align: center; vertical-align: middle;">Img</th>
+                <th style="padding: 5px; text-align: center; vertical-align: middle;">QR</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @foreach (var employee in Model)
+            {
+            <tr class="table-active">
+                <th scope="row"><?=$i?></th>
+                <th>@employee.product</th>
+                <th>@employee.initialAmount</th>
+                <th>@employee.currentAmount</th>
+                <th>@employee.containerNumber</th>
+                <th>@employee.date</th>
+                <th style="padding: 0px; text-align: center; vertical-align: middle;">
+                    <span class="img-container">
+                        <img alt="@employee.Id " style="max-height: 30px; max-width: 30px; min-height: 30px; min-width: 30px;; " src="https://codeorum.com/images/article_images/900/20200726T133520_900.jpg">
+
+
+                    </span>
+                </th>
+                <th style="padding: 0px; text-align: center; vertical-align: middle;">
+                    <span class="img-container">
+                        <img alt="@employee.Id " style="max-height: 30px; max-width: 30px; min-height: 30px; min-width: 30px;; " src="https://codeorum.com/images/article_images/900/20200726T133520_900.jpg">
+
+
+                    </span>
+                </th>
+            </tr>}
+
+        </tbody>
+
+    </table>
+
+</div>
+<script>
+    function getCommodityPic( id,button) {
+        
+        $.ajax({
+            url: '@Url.Action("DownloadPic", "Home")',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: {
+                Id : id
+            },
+            type: "GET",
+            success: function (Data, Status, jqXHR) {
+               
+                var img = $('#popImage');
+                if ($(button).attr('src') == "https://codeorum.com/images/article_images/900/20200726T133520_900.jpg") {
+                    img.attr('src', Data);
+                    $(button).attr('src', Data);
+                }
+                
+
+            }
+        });
+    }
+</script>

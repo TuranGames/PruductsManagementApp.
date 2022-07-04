@@ -1,0 +1,142 @@
+﻿@model IEnumerable<HistorytDatabase>
+
+
+<div  class="cardCount" id="contact" style="  display: none; border-radius: 4px; margin: 5px; padding: 0px; max-width: 250px; min-width: 250px;">
+    <div class="image-box">
+        <img id="imag" src="" style='height:250px'>
+    </div>
+    <div style="padding:5px 15px 5px 15px">
+        <div style="line-height: 22px;">Model:<span class="title " id="Idx"></span></div>
+        <div style="line-height: 22px;">Date:<span class="title datex" id="datex"></span></div>
+        <div style="line-height: 22px;">Number of products:<span class="title " id="amountx"></span></div>
+        <div style="line-height: 22px;">Narx:<span class="title " id="cashOwnedx"></span></div>
+        <div style="line-height: 22px;">Pokupatel:<span class="title " id="clinetx"></span></div>
+    </div>
+    <div style="width:100%;padding:0px 5px 5px 5px;display:flex;justify-content:space-between;">
+
+        <button id="confirmBtn" class="button backGreen" data-request-url='@Url.Action("doCmd", "Home")' style="margin:0px 5px 0px 0px;width:100%;">
+            <span class="label">Confirm</span>
+        </button>
+        <button id="cancelBtn" class="button backRed" data-request-url='@Url.Action("doCmd", "Home")' style="margin:0;width:100%;">
+            <span class="label">Cancel</span>
+        </button>
+    </div>
+</div>
+<div style="display: flex;  flex-wrap: wrap;  " id="cardContainer">
+
+</div>
+<script>
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+
+        var timeOut = 3000;
+        loadDiv();
+            timer();
+
+
+        function timer() {
+
+            setTimeout(function () { timer(); loadDiv(true);}, timeOut);
+
+        }
+
+    });
+    function myFunction(res) {
+        
+        var card = $("#contact").clone();
+        
+        card.css("display", "block");
+        
+
+        card.find('#Idx').html(res.id);
+        card.find('#datex').html(res.date);
+        card.find('#amountx').html(res.amount);
+        card.find('#cashOwnedx').html(res.cashOwned);
+        card.find('#clinetx').html(res.client);
+        card.find('#confirmBtn').attr('onclick', 'doCmd("confirm","' + res.id+'",this)');
+        card.find('#cancelBtn').attr('onclick', 'doCmd("cancel","' + res.id + '",this)');
+        card.find('#imag').attr('onerror', 'getyPic("' + res.productId + '",this)');
+            card.appendTo($("#cardContainer"));
+
+        
+    }
+    function loadDiv(loadSingle = false) {
+
+
+        var divsNumber = document.getElementsByClassName('cardCount').length - 1;
+        console.log("cardCount " + divsNumber);
+        $.ajax(
+            {
+                url: '@Url.Action("getContent", "Home")',
+                type: 'Post',
+                data: {
+                    LoadSingle: loadSingle,
+                    DivsNumber: divsNumber
+                },
+                
+                success: function (result) {
+                    if (!loadSingle) {
+                        $('#cardContainer').html("");
+                        for (var i = result.length -1; i >= 0; i--) {
+                            console.log(i);
+                            myFunction(result[i]);
+                        }
+                    } else {
+                        if (result != null) {
+                            console.log("divs "+divsNumber);
+                            for (var i = result.length - divsNumber-1; i >= 0; i--) {
+                                console.log(i);
+                                myFunction(result[i]);
+                            }
+                        }
+                    }
+
+                  
+
+
+
+                },
+                error: function () {
+                    alert("error");
+
+                }
+            });
+    }
+    function getyPic( id,el) {
+
+        $.ajax({
+            url: '@Url.Action("DownloadPic", "Home")',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: {
+                Id : id
+            },
+            type: "GET",
+            success: function (Data, Status, jqXHR) {
+
+                console.log("laded");
+
+                $(el).attr('src', Data);
+
+            }
+        });
+    }
+</script>
+
+<script>
+
+
+    function removeSmooth(el) {
+        
+        var card = el.closest(".cardCount");
+        card.style.zIndex = "-1";
+        card.style.opacity = "0";
+        card.style.marginLeft = "-254px";
+        setTimeout(function () { card.remove(); }, 700);
+        
+        
+    }
+
+ 
+
+</script>
