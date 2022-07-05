@@ -1,22 +1,24 @@
-﻿function initImagePopup(elem) {
-    // check for mouse click, add event listener on document
-    document.addEventListener('click', function (e) {
-        // check if click target is img of the elem - elem is image container
-        if (!e.target.matches(elem + ' img')) return;
-        else {
+﻿function initImagePopup(elem,isImage = true) {
+   
 
-            var image = e.target; // get current clicked image
+    var image = elem; // get current clicked image
 
             // create new popup image with all attributes for clicked images and offsets of the clicked image
-            var popupImage = document.createElement("img");
+    var popupImage = document.createElement("img");
+    var canvasCont = document.createElement("div");
+    var qrString = image.getAttribute('alt');
+    $cnv = $(canvasCont).qrcode(qrString);
+    var canvas = $cnv.find("canvas")[0];
+    $cnv.remove();
             popupImage.setAttribute('src', image.src);
             popupImage.style.width = image.width + "px";
             popupImage.style.height = image.height + "px";
-            popupImage.style.left = image.offsetLeft + "px";
-            popupImage.style.top = image.offsetTop + "px";
+    canvas.style.width = image.width + "px";
+    canvas.style.height = image.height + "px";
             popupImage.classList.add('popImage');
-            popupImage.id = 'popImage';
-            getCommodityPic(image.getAttribute('alt'), image);
+    popupImage.id = 'popImage';
+    canvas.classList.add('popImage');
+           
             // creating popup image container
             var popupContainer = document.createElement("div");
             popupContainer.classList.add('popupContainer');
@@ -26,12 +28,20 @@
             popUpBackground.classList.add('popUpBackground');
 
             // append all created elements to the popupContainer then on the document.body
-            popupContainer.appendChild(popUpBackground);
-            popupContainer.appendChild(popupImage);
+    popupContainer.appendChild(popUpBackground);
+    if (isImage) {
+        var imageType =  popupContainer.appendChild(popupImage);
+        getCommodityPic(image.getAttribute('alt'), image);
+    } else {
+        
+       var  imageType = popupContainer.appendChild(canvas);
+    }
+    
+   
             document.body.appendChild(popupContainer);
 
             // call function popup image to create new dimensions for popup image and make the effect
-            popupImageFunction();
+    popupImageFunction(imageType);
 
 
             // resize function, so that popup image have responsive ability
@@ -42,35 +52,34 @@
             };
 
             // close popup image clicking on it
-            popupImage.addEventListener('click', function (e) {
-                closePopUpImage();
+    imageType.addEventListener('click', function (e) {
+                closePopUpImage(imageType);
             });
             // close popup image on clicking on the background
             popUpBackground.addEventListener('click', function (e) {
-                closePopUpImage();
+                closePopUpImage(imageType);
             });
          
-            function popupImageFunction() {
+            function popupImageFunction(imageType) {
                 // wait few miliseconds (10) and change style of the popup image and make it popup
                 // waiting is for animation to work, yulu can disable it and check what is happening when it's not there
                 setTimeout(function () {
                     // I created this part very simple, but you can do it much better by calculating height and width of the screen,
                     // image dimensions.. so that popup image can be placed much better
+                    
                     popUpBackground.classList.add('active');
-                   
-                    popupImage.style.top = "97px";
-                    popupImage.style.width = "";
-                    popupImage.style.height = window.innerHeight-130+"px";
+                    imageType.style.top = "97px";
+                    imageType.style.width = "";
+                    imageType.style.height = window.innerHeight-130+"px";
                 }, 10);
             }
 
             // function for closing popup image, first it will be return to the place where 
             // it started then it will be removed totaly (deleted) after animation is over, in our case 300ms
-            function closePopUpImage() {
+    function closePopUpImage(imageType) {
                 //popupImage.style.width = image.width + "px";
-                popupImage.style.height = image.height + "px";
-                popupImage.style.left = image.offsetLeft + "px";
-                popupImage.style.top = image.offsetTop + "px";
+        imageType.style.height = image.height + "px";
+
                 popUpBackground.classList.remove('active');
                 setTimeout(function () {
                     popupContainer.remove();
@@ -78,10 +87,9 @@
             }
 
 
-        }
-    });
+    
 }
 
 
 // Start popup image function
-initImagePopup(".img-container") // elem = image container
+//initImagePopup(".img-container") // elem = image container
