@@ -10,3 +10,8 @@ Used technologies:
 
 <h3>Unity3d app to scan Qr Code and send Get query to controller</h3>
 
+WebApplication2/UnityQrScanner
+
+<h3>Website in somee.com free hosting</h3>
+http://www.testsitekarvon.somee.com/
+
