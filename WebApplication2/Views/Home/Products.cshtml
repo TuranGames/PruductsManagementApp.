@@ -15,6 +15,7 @@
                 <th>Date</th>
                 <th style="padding: 5px; text-align: center; vertical-align: middle;">Img</th>
                 <th style="padding: 5px; text-align: center; vertical-align: middle;">QR</th>
+            <th></th>
             </tr>
         </thead>
         <tbody>
@@ -43,6 +44,7 @@
 
                     </span>
                 </th>
+                <th><button id="deleteRow" onclick="deleteRow(@employee.Id,this)">X</button></th>
             </tr>}
 
         </tbody>
@@ -52,7 +54,7 @@
 </div>
 <script>
     function getCommodityPic( id,button) {
-        
+
         $.ajax({
             url: '@Url.Action("DownloadPic", "Home")',
             contentType: 'application/json; charset=utf-8',
@@ -62,13 +64,33 @@
             },
             type: "GET",
             success: function (Data, Status, jqXHR) {
-               
+
                 var img = $('#popImage');
                 if ($(button).attr('src') == "https://codeorum.com/images/article_images/900/20200726T133520_900.jpg") {
                     img.attr('src', Data);
                     $(button).attr('src', Data);
                 }
-                
+
+
+            }
+        });
+    }
+
+    function deleteRow(id,el) {
+
+        $.ajax({
+            url: '@Url.Action("DeleteRow", "Home")',
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            data: {
+                Id : id
+            },
+            type: "GET",
+            success: function (Data, Status, jqXHR) {
+                var row = el.parentElement.closest("tr");
+                row.style.opacity = "0";
+                setTimeout(function () { row.remove(); }, 700);
+
 
             }
         });

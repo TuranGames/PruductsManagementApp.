@@ -171,6 +171,9 @@ nav ul {
   display: flex;
   justify-content: flex-end;
 }
+tr{
+    transition:0.7s;
+}
 body,
 h1,
 ul {

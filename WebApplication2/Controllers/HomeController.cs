@@ -101,7 +101,7 @@ namespace WebApplication2.Controllers
             string uploadFolder = "";
 
 
-
+            var date = DateTime.Now.ToString("yyyy-MM-dd");
 
             if (td.photo != null)
             {
@@ -110,11 +110,12 @@ namespace WebApplication2.Controllers
                  imageFilePath = Path.Combine(uploadFolder, uniqueFileName);
                 td.photo.CopyTo(new FileStream(imageFilePath,FileMode.Create));
             }
-            var author = new TestDatabase { initialAmount = td.initialAmount, currentAmount = td.currentAmount, product = td.product, date = td.date, image = uniqueFileName,  containerNumber = td.containerNumber };
+            var author = new TestDatabase { initialAmount = td.initialAmount, currentAmount = td.currentAmount, product = td.product, date = date, image = uniqueFileName,  containerNumber = td.containerNumber };
              _db.Add<TestDatabase>(author);
             _db.SaveChanges();
             return RedirectToAction("Products"); 
         }
+
 
         public ActionResult DownloadPic(int? id)
         {
@@ -137,7 +138,29 @@ namespace WebApplication2.Controllers
             _db.SaveChanges();
         }
 
-        public string doCmd(string comd,int id)
+        public void DeleteRow(int id)
+        {
+            var itemToRemove = _db.TestDb.SingleOrDefault(x => x.Id == id); //returns a single item.
+            var rwsRemove = _db.HistoryDb
+           .Where(u => u.productId == id.ToString() && u.confirmed == 0);
+            if (itemToRemove != null)
+            {
+                string imageName = _db
+        .TestDb
+        .Where(u => u.Id == id)
+        .Select(u => u.image)
+        .FirstOrDefault();
+                var uploadFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                var uniqueFileName = imageName;
+                var imageFilePath = Path.Combine(uploadFolder, uniqueFileName);
+                System.IO.File.Delete(imageFilePath);
+                _db.TestDb.Remove(itemToRemove);
+                _db.HistoryDb.RemoveRange(rwsRemove);
+                _db.SaveChanges();
+            }
+
+        }
+            public string doCmd(string comd,int id)
         {
             if(comd == "cancel")
             {
@@ -150,8 +173,10 @@ namespace WebApplication2.Controllers
             else if (comd == "confirm")
             {
                 var result = _db.HistoryDb.SingleOrDefault(b => b.Id == id);
-             
-                    result.confirmed = 1;
+                var res = _db.TestDb.SingleOrDefault(b => b.Id.ToString() == result.productId);
+                res.currentAmount = (Int32.Parse(res.currentAmount) - Int32.Parse(result.amount)).ToString();
+                _db.SaveChanges();
+                result.confirmed = 1;
                     _db.SaveChanges();
                     return "confirmed";
                
