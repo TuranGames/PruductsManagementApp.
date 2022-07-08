@@ -2,7 +2,63 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="statis">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1">
+                <div class="bg-primary">
+                    <i class="fa fa-eye borderImag"></i>
+                    <h3>5,154</h3>
+                    <p class="lead">Page views</p>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="bg-primary" style="background-color: #d9534f">
+                    <i class="fa fa-user-o borderImag"></i>
+                    <h3>245</h3>
+                    <p class="lead">User registered</p>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="bg-primary" style="background-color: #f0ad4e">
+                    <i class="fa fa-shopping-cart borderImag"></i>
+                    <h3>5,154</h3>
+                    <p class="lead">Product sales</p>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="bg-primary" style="background-color:#5cb85c">
+                    <i class="fa fa-handshake-o borderImag"></i>
+                    <h3>5,154</h3>
+                    <p class="lead">Transactions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="charts" style="width:100%">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="cv">
+                <div class="chart-container">
+                    <h3>Chart</h3>
+
+                    <canvas id="myChart" height="90"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 cv">
+                <div class="chart-container">
+                    <h3>Chart2</h3>
+                    <canvas id="pieChart" height="190"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 cv">
+                <div class="chart-container">
+                    <h3>Chart2</h3>
+                    <canvas id="pieChart2" height="190"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

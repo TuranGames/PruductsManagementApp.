@@ -11,10 +11,10 @@
     var canvas = $cnv.find("canvas")[0];
     $cnv.remove();
             popupImage.setAttribute('src', image.src);
-            popupImage.style.width = image.width + "px";
-            popupImage.style.height = image.height + "px";
-    canvas.style.width = image.width + "px";
-    canvas.style.height = image.height + "px";
+    popupImage.style.width = "0px";
+    popupImage.style.height = "0px";
+    canvas.style.width =  "0px";
+    canvas.style.height = "0px";
             popupImage.classList.add('popImage');
     popupImage.id = 'popImage';
     canvas.classList.add('popImage');
@@ -68,7 +68,7 @@
                     // image dimensions.. so that popup image can be placed much better
                     
                     popUpBackground.classList.add('active');
-                    imageType.style.top = "97px";
+                    imageType.style.top = "60px";
                     imageType.style.width = "";
                     imageType.style.height = window.innerHeight-130+"px";
                 }, 10);

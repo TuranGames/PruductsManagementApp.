@@ -2,18 +2,7 @@
 
 .container img{width:40px;border-radius:6px 0 0 6px;}
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,600,400italic);
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  -o-font-smoothing: antialiased;
-  font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+
 
 #cardContainer > * {
     transition: all 0.7s;
@@ -33,7 +22,7 @@ body {
 }
 
 .container {
-  max-width: 800px;
+  
   width: 100%;
   margin: 0 auto;
   position: relative;
@@ -186,14 +175,14 @@ ul {
     overflow: hidden;
     width: 100%;
 }
-.image-box img {
-    
-    transition: all 0.3s;
-    display: block;
-    height:250px;
-    height: auto;
-    transform: scale(1);
-}
+    .image-box img {
+        width: 100%;
+        transition: all 0.3s;
+        display: block;
+        height: 250px;
+        height: auto;
+        transform: scale(1);
+    }
 
 .image-box:hover img {
     transform: scale(1.1);
